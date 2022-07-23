@@ -18,7 +18,7 @@ FetchContent_Declare(
     snapshot
     QUIET
     GIT_REPOSITORY https://github.com/Dup4/snapshot-cpp.git
-    GIT_TAG v0.1.10
+    GIT_TAG v0.1.12
 )
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
@@ -31,9 +31,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-access-control")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
 
-file(GLOB UNITTEST_FILE "*_test.cc")
+file(GLOB UNITTEST_FILE "*_test.cc" "./types_check/*_test.cc")
 add_executable(
     unit_test
     ${UNITTEST_FILE}
