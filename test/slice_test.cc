@@ -122,6 +122,18 @@ TEST_F(SliceTest, All) {
             EXPECT_FALSE(res);
         }
     }
+
+    {
+        auto t = std::map<int, int>({{1, 1}, {2, 2}, {3, 3}});
+
+        {
+            auto res = All(t, [](const int k, const int &v) {
+                return k >= 1 && v >= 1;
+            });
+
+            EXPECT_TRUE(res);
+        }
+    }
 }
 
 }  // namespace lodash::test
