@@ -26,7 +26,7 @@ void ForEach(Container&& c, F&& f) {
 }
 
 template <typename Container, typename F>
-bool All(Container&& c, F&& f) {
+bool Every(Container&& c, F&& f) {
     bool ok = true;
 
     type_utility::VisitContainer(std::forward<Container>(c), std::forward<F>(f), [&ok](auto&& x) {

@@ -102,12 +102,12 @@ TEST_F(SliceTest, ForEach) {
     }
 }
 
-TEST_F(SliceTest, All) {
+TEST_F(SliceTest, Every) {
     {
         auto t = std::vector<int>({1, 2, 3, 4, 5});
 
         {
-            auto res = All(t, [](const int &x) {
+            auto res = Every(t, [](const int &x) {
                 return x > 0;
             });
 
@@ -115,7 +115,7 @@ TEST_F(SliceTest, All) {
         }
 
         {
-            auto res = All(t, [](const int &x) {
+            auto res = Every(t, [](const int &x) {
                 return x > 1;
             });
 
@@ -127,7 +127,7 @@ TEST_F(SliceTest, All) {
         auto t = std::map<int, int>({{1, 1}, {2, 2}, {3, 3}});
 
         {
-            auto res = All(t, [](const int k, const int &v) {
+            auto res = Every(t, [](const int k, const int &v) {
                 return k >= 1 && v >= 1;
             });
 
