@@ -7,7 +7,7 @@
 #include "lodash/lodash.h"
 #include "lodash/types_check/is_iterable.h"
 
-namespace lodash::test {
+namespace lodash::types_check::test {
 
 class IsIterableTest : public testing::Test {
 protected:
@@ -15,14 +15,14 @@ protected:
 };
 
 TEST_F(IsIterableTest, is_iterable) {
-    EXPECT_TRUE(types_check::is_iterable<std::vector<int>>);
+    EXPECT_TRUE(is_iterable<std::vector<int>>);
 
     {
-        auto res = types_check::is_iterable<std::map<int, int>>;
+        auto res = is_iterable<std::map<int, int>>;
         EXPECT_TRUE(res);
     }
 
-    EXPECT_FALSE(types_check::is_iterable<int>);
+    EXPECT_FALSE(is_iterable<int>);
 }
 
-}  // namespace lodash::test
+}  // namespace lodash::types_check::test
