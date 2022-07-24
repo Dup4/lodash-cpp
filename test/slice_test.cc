@@ -14,6 +14,22 @@ protected:
 
 TEST_F(SliceTest, map_test) {
     auto t = std::vector<int>({1, 2, 3, 4, 5});
+
+    {
+        auto res = Map<std::vector<int>>(t, [](auto &&x) {
+            return x * 2;
+        });
+
+        EXPECT_EQ(res, std::vector<int>({2, 4, 6, 8, 10}));
+    }
+
+    {
+        auto res = Map<std::vector<std::string>>(t, [](auto &&x) {
+            return std::to_string(x);
+        });
+
+        EXPECT_EQ(res, std::vector<std::string>({"1", "2", "3", "4", "5"}));
+    }
 }
 
 TEST_F(SliceTest, ForEach) {
