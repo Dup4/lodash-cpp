@@ -102,4 +102,16 @@ TEST_F(SliceTest, ForEach) {
     }
 }
 
+TEST_F(SliceTest, All) {
+    auto t = std::vector<int>({1, 2, 3, 4, 5});
+
+    {
+        auto res = All(t, [](const int &x) {
+            return x > 0;
+        });
+
+        EXPECT_TRUE(res);
+    }
+}
+
 }  // namespace lodash::test
