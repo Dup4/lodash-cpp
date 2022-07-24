@@ -36,12 +36,28 @@ TEST_F(SliceTest, ForEach) {
     }
 
     {
+        auto x = std::vector<int>({1, 2, 3, 4, 5});
+        ForEach(x, []([[maybe_unused]] const int &x) {});
+
+        EXPECT_EQ(x, std::vector<int>({1, 2, 3, 4, 5}));
+    }
+
+    {
         auto x = std::set<int>({1, 2, 3});
         ForEach(x, [](int &x) {
             ++x;
         });
 
         EXPECT_EQ(x, std::set<int>({1, 2, 3}));
+    }
+
+    {
+        std::string s = "abcd";
+        ForEach(s, [](char &c) {
+            ++c;
+        });
+
+        EXPECT_EQ(s, std::string("bcde"));
     }
 }
 
