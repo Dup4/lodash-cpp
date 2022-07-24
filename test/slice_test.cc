@@ -136,4 +136,46 @@ TEST_F(SliceTest, All) {
     }
 }
 
+TEST_F(SliceTest, Some) {
+    {
+        auto t = std::vector<int>({1, 2, 3, 4, 5});
+
+        {
+            auto res = Some(t, [](const int &x) {
+                return x > 0;
+            });
+
+            EXPECT_TRUE(res);
+        }
+
+        {
+            auto res = Some(t, [](const int &x) {
+                return x > 1;
+            });
+
+            EXPECT_TRUE(res);
+        }
+    }
+
+    {
+        auto t = std::map<int, int>({{1, 1}, {2, 2}, {3, 3}});
+
+        {
+            auto res = Some(t, [](const int k, const int &v) {
+                return k >= 3 && v >= 3;
+            });
+
+            EXPECT_TRUE(res);
+        }
+
+        {
+            auto res = Some(t, [](const int k, const int &v) {
+                return k >= 4 && v >= 4;
+            });
+
+            EXPECT_FALSE(res);
+        }
+    }
+}
+
 }  // namespace lodash::test

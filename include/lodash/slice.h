@@ -37,6 +37,18 @@ bool All(Container&& c, F&& f) {
     return ok;
 }
 
+template <typename Container, typename F>
+bool Some(Container&& c, F&& f) {
+    bool ok = false;
+
+    type_utility::VisitContainer(std::forward<Container>(c), std::forward<F>(f), [&ok](auto&& x) {
+        ok = x;
+        return type_utility::ReturnInfo{.need_exit = ok};
+    });
+
+    return ok;
+}
+
 }  // namespace lodash
 
 #endif  // LODASH_SLICE_H
