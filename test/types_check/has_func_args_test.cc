@@ -8,12 +8,12 @@
 
 namespace lodash::test {
 
-class TestFuncArgsTest : public testing::Test {
+class HasFuncArgsTest : public testing::Test {
 protected:
     virtual void SetUp() override {}
 };
 
-TEST_F(TestFuncArgsTest, test_func_args) {
+TEST_F(HasFuncArgsTest, has_func_args) {
     {
         auto f = []([[maybe_unused]] int& x) {};
 
