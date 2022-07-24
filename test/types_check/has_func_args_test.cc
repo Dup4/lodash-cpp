@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "lodash/lodash.h"
-#include "lodash/types_check/test_func_args.h"
+#include "lodash/types_check/has_func_args.h"
 
 namespace lodash::test {
 
@@ -18,12 +18,12 @@ TEST_F(TestFuncArgsTest, test_func_args) {
         auto f = []([[maybe_unused]] int& x) {};
 
         {
-            auto res = types_check::test_func_args_1_v<decltype(f), int&>;
+            auto res = types_check::has_func_args_1<decltype(f), int&>;
             EXPECT_TRUE(res);
         }
 
         {
-            auto res = types_check::test_func_args_2_v<decltype(f), int&, size_t>;
+            auto res = types_check::has_func_args_2<decltype(f), int&, size_t>;
             EXPECT_FALSE(res);
         }
     }
@@ -32,12 +32,12 @@ TEST_F(TestFuncArgsTest, test_func_args) {
         auto f = []([[maybe_unused]] int& x, [[maybe_unused]] size_t ix) {};
 
         {
-            auto res = types_check::test_func_args_2_v<decltype(f), int&, size_t>;
+            auto res = types_check::has_func_args_2<decltype(f), int&, size_t>;
             EXPECT_TRUE(res);
         }
 
         {
-            auto res = types_check::test_func_args_1_v<decltype(f), int&>;
+            auto res = types_check::has_func_args_1<decltype(f), int&>;
             EXPECT_FALSE(res);
         }
     }
