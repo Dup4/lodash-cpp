@@ -107,7 +107,7 @@ TEST_F(SliceTest, Every) {
         auto t = std::vector<int>({1, 2, 3, 4, 5});
 
         {
-            auto res = Every(t, [](const int &x) {
+            auto res = EveryBy(t, [](const int &x) {
                 return x > 0;
             });
 
@@ -115,11 +115,16 @@ TEST_F(SliceTest, Every) {
         }
 
         {
-            auto res = Every(t, [](const int &x) {
+            auto res = EveryBy(t, [](const int &x) {
                 return x > 1;
             });
 
             EXPECT_FALSE(res);
+        }
+
+        {
+            auto res = Every(t);
+            EXPECT_TRUE(res);
         }
     }
 
@@ -127,7 +132,7 @@ TEST_F(SliceTest, Every) {
         auto t = std::map<int, int>({{1, 1}, {2, 2}, {3, 3}});
 
         {
-            auto res = Every(t, [](const int k, const int &v) {
+            auto res = EveryBy(t, [](const int k, const int &v) {
                 return k >= 1 && v >= 1;
             });
 
@@ -141,7 +146,7 @@ TEST_F(SliceTest, Some) {
         auto t = std::vector<int>({1, 2, 3, 4, 5});
 
         {
-            auto res = Some(t, [](const int &x) {
+            auto res = SomeBy(t, [](const int &x) {
                 return x > 0;
             });
 
@@ -149,10 +154,15 @@ TEST_F(SliceTest, Some) {
         }
 
         {
-            auto res = Some(t, [](const int &x) {
+            auto res = SomeBy(t, [](const int &x) {
                 return x > 1;
             });
 
+            EXPECT_TRUE(res);
+        }
+
+        {
+            auto res = Some(t);
             EXPECT_TRUE(res);
         }
     }
@@ -161,7 +171,7 @@ TEST_F(SliceTest, Some) {
         auto t = std::map<int, int>({{1, 1}, {2, 2}, {3, 3}});
 
         {
-            auto res = Some(t, [](const int k, const int &v) {
+            auto res = SomeBy(t, [](const int k, const int &v) {
                 return k >= 3 && v >= 3;
             });
 
@@ -169,7 +179,7 @@ TEST_F(SliceTest, Some) {
         }
 
         {
-            auto res = Some(t, [](const int k, const int &v) {
+            auto res = SomeBy(t, [](const int k, const int &v) {
                 return k >= 4 && v >= 4;
             });
 

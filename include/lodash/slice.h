@@ -26,7 +26,7 @@ void ForEach(Container&& c, F&& f) {
 }
 
 template <typename Container, typename F>
-bool Every(Container&& c, F&& f) {
+bool EveryBy(Container&& c, F&& f) {
     bool ok = true;
 
     type_utility::VisitContainer(std::forward<Container>(c), std::forward<F>(f), [&ok](auto&& x) {
@@ -37,8 +37,15 @@ bool Every(Container&& c, F&& f) {
     return ok;
 }
 
+template <typename Container>
+bool Every(Container&& c) {
+    return EveryBy(std::forward<Container>(c), [](auto&& x) {
+        return static_cast<bool>(x);
+    });
+}
+
 template <typename Container, typename F>
-bool Some(Container&& c, F&& f) {
+bool SomeBy(Container&& c, F&& f) {
     bool ok = false;
 
     type_utility::VisitContainer(std::forward<Container>(c), std::forward<F>(f), [&ok](auto&& x) {
@@ -47,6 +54,13 @@ bool Some(Container&& c, F&& f) {
     });
 
     return ok;
+}
+
+template <typename Container>
+bool Some(Container&& c) {
+    return SomeBy(std::forward<Container>(c), [](auto&& x) {
+        return static_cast<bool>(x);
+    });
 }
 
 }  // namespace lodash
