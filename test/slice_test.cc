@@ -52,6 +52,17 @@ TEST_F(SliceTest, Filter) {
 
         EXPECT_EQ(res, std::vector<int>({2, 4}));
     }
+
+    {
+        const auto t = std::map<int, int>({{1, 2}, {2, 3}, {3, 4}, {4, 5}});
+
+        auto res = Filter(t, [](const int &k, const int &v) {
+            return k >= 3 || v >= 3;
+        });
+
+        auto expected = std::map<int, int>({{2, 3}, {3, 4}, {4, 5}});
+        EXPECT_EQ(res, expected);
+    }
 }
 
 TEST_F(SliceTest, ForEach) {
