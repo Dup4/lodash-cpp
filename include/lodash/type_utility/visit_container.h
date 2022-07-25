@@ -26,13 +26,14 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
 
     using key_type = typename std::decay_t<Container>::key_type;
     using mapped_type = typename std::decay_t<Container>::mapped_type;
+    using value_type = typename std::decay_t<Container>::value_type;
 
     auto begin = std::begin(c);
     auto end_it = std::end(c);
 
     while (begin != end_it) {
-        if constexpr (type_check::has_func_args_2<F, decltype(*begin), size_t>) {
-            using return_type = std::result_of_t<F(decltype(*begin), size_t)>;
+        if constexpr (type_check::has_func_args_2<F, value_type&, size_t>) {
+            using return_type = std::result_of_t<F(value_type&, size_t)>;
             if constexpr (std::is_void_v<return_type>) {
                 f(*begin, ix);
             } else {
@@ -41,8 +42,8 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
                     break;
                 }
             }
-        } else if constexpr (type_check::has_func_args_1<F, decltype(*begin)>) {
-            using return_type = std::result_of_t<F(decltype(*begin))>;
+        } else if constexpr (type_check::has_func_args_1<F, value_type&>) {
+            using return_type = std::result_of_t<F(value_type&)>;
             if constexpr (std::is_void_v<return_type>) {
                 f(*begin);
             } else {
