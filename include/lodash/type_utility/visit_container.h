@@ -25,7 +25,7 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
     size_t ix = 0;
 
     using key_type = typename std::decay_t<Container>::key_type;
-    using value_type = typename std::decay_t<Container>::mapped_type;
+    using mapped_type = typename std::decay_t<Container>::mapped_type;
 
     auto begin = std::begin(c);
     auto end_it = std::end(c);
@@ -52,8 +52,8 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
                 }
             }
         } else {
-            if constexpr (type_check::has_func_args_3<F, key_type, value_type&, size_t>) {
-                using return_type = std::result_of_t<F(key_type, value_type&, size_t)>;
+            if constexpr (type_check::has_func_args_3<F, key_type, mapped_type&, size_t>) {
+                using return_type = std::result_of_t<F(key_type, mapped_type&, size_t)>;
                 if constexpr (std::is_void_v<return_type>) {
                     f(begin->first, begin->second, ix);
                 } else {
@@ -62,8 +62,8 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
                         break;
                     }
                 }
-            } else if constexpr (type_check::has_func_args_2<F, key_type, value_type&>) {
-                using return_type = std::result_of_t<F(key_type, value_type&)>;
+            } else if constexpr (type_check::has_func_args_2<F, key_type, mapped_type&>) {
+                using return_type = std::result_of_t<F(key_type, mapped_type&)>;
                 if constexpr (std::is_void_v<return_type>) {
                     f(begin->first, begin->second);
                 } else {
