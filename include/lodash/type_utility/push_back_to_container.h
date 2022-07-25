@@ -3,13 +3,13 @@
 
 #include <type_traits>
 
-#include "../types_check/is_map.h"
+#include "../type_check/is_map.h"
 
 namespace lodash::type_utility {
 
 template <typename Container, typename T>
 inline void PushBackToContainer(Container&& c, T&& t) {
-    if constexpr (types_check::is_map<std::decay_t<Container>>) {
+    if constexpr (type_check::is_map<std::decay_t<Container>>) {
         c.emplace(std::forward<T>(t));
     } else {
         c.emplace_back(std::forward<T>(t));

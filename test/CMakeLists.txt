@@ -36,7 +36,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
 
 file(GLOB UNITTEST_FILE
     "*_test.cc"
-    "./types_check/*_test.cc"
+    "./type_check/*_test.cc"
     "./type_utility/*_test.cc"
 )
 add_executable(

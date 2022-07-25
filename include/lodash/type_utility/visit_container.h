@@ -3,9 +3,9 @@
 
 #include <type_traits>
 
-#include "../types_check/common.h"
-#include "../types_check/has_func_args.h"
-#include "../types_check/is_map.h"
+#include "../type_check/common.h"
+#include "../type_check/has_func_args.h"
+#include "../type_check/is_map.h"
 
 namespace lodash::type_utility {
 
@@ -18,7 +18,7 @@ inline auto default_visit_handler = []([[maybe_unused]] auto... t) -> ReturnInfo
 };
 
 template <typename Container,
-          std::enable_if_t<types_check::is_map<std::decay_t<Container>>, bool> = true,
+          std::enable_if_t<type_check::is_map<std::decay_t<Container>>, bool> = true,
           typename F,
           typename H>
 inline void VisitContainer(Container&& c, F&& f, H&& h) {
@@ -31,7 +31,7 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
     auto end_it = std::end(c);
 
     while (begin != end_it) {
-        if constexpr (types_check::has_func_args_2<F, decltype(*begin), size_t>) {
+        if constexpr (type_check::has_func_args_2<F, decltype(*begin), size_t>) {
             using return_type = std::result_of_t<F(decltype(*begin), size_t)>;
             if constexpr (std::is_void_v<return_type>) {
                 f(*begin, ix);
@@ -41,7 +41,7 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
                     break;
                 }
             }
-        } else if constexpr (types_check::has_func_args_1<F, decltype(*begin)>) {
+        } else if constexpr (type_check::has_func_args_1<F, decltype(*begin)>) {
             using return_type = std::result_of_t<F(decltype(*begin))>;
             if constexpr (std::is_void_v<return_type>) {
                 f(*begin);
@@ -52,7 +52,7 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
                 }
             }
         } else {
-            if constexpr (types_check::has_func_args_3<F, key_type, value_type&, size_t>) {
+            if constexpr (type_check::has_func_args_3<F, key_type, value_type&, size_t>) {
                 using return_type = std::result_of_t<F(key_type, value_type&, size_t)>;
                 if constexpr (std::is_void_v<return_type>) {
                     f(begin->first, begin->second, ix);
@@ -62,7 +62,7 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
                         break;
                     }
                 }
-            } else if constexpr (types_check::has_func_args_2<F, key_type, value_type&>) {
+            } else if constexpr (type_check::has_func_args_2<F, key_type, value_type&>) {
                 using return_type = std::result_of_t<F(key_type, value_type&)>;
                 if constexpr (std::is_void_v<return_type>) {
                     f(begin->first, begin->second);
@@ -73,7 +73,7 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
                     }
                 }
             } else {
-                static_assert(types_check::false_v<Container>, "invalid function arguments");
+                static_assert(type_check::false_v<Container>, "invalid function arguments");
             }
         }
 
@@ -83,14 +83,14 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
 }
 
 template <typename Container,
-          std::enable_if_t<!types_check::is_map<std::decay_t<Container>>, bool> = true,
+          std::enable_if_t<!type_check::is_map<std::decay_t<Container>>, bool> = true,
           typename F,
           typename H>
 inline void VisitContainer(Container&& c, F&& f, H&& h) {
     size_t ix = 0;
 
     for (auto&& x : c) {
-        if constexpr (types_check::has_func_args_2<F, decltype(x), size_t>) {
+        if constexpr (type_check::has_func_args_2<F, decltype(x), size_t>) {
             using return_type = std::result_of_t<F(decltype(x), size_t)>;
             if constexpr (std::is_void_v<return_type>) {
                 f(x, ix);
@@ -100,7 +100,7 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
                     break;
                 }
             }
-        } else if constexpr (types_check::has_func_args_1<F, decltype(x)>) {
+        } else if constexpr (type_check::has_func_args_1<F, decltype(x)>) {
             using return_type = std::result_of_t<F(decltype(x))>;
             if constexpr (std::is_void_v<return_type>) {
                 f(x);
@@ -111,7 +111,7 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
                 }
             }
         } else {
-            static_assert(types_check::false_v<Container>, "invalid function arguments");
+            static_assert(type_check::false_v<Container>, "invalid function arguments");
         }
 
         ++ix;

@@ -78,7 +78,7 @@ TEST_F(SliceTest, ForEach) {
 
     {
         auto mp = std::map<int, int>({{1, 1}, {2, 2}, {3, 3}});
-        EXPECT_TRUE(types_check::is_map<decltype(mp)>);
+        EXPECT_TRUE(type_check::is_map<decltype(mp)>);
 
         int ix = 0;
 

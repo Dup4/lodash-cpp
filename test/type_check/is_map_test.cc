@@ -5,9 +5,9 @@
 #include <vector>
 
 #include "lodash/lodash.h"
-#include "lodash/types_check/is_map.h"
+#include "lodash/type_check/is_map.h"
 
-namespace lodash::types_check::test {
+namespace lodash::type_check::test {
 
 class IsMapTest : public testing::Test {
 protected:
@@ -26,4 +26,4 @@ TEST_F(IsMapTest, is_map) {
     }
 }
 
-}  // namespace lodash::types_check::test
+}  // namespace lodash::type_check::test

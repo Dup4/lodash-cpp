@@ -5,9 +5,9 @@
 #include <vector>
 
 #include "lodash/lodash.h"
-#include "lodash/types_check/is_iterable.h"
+#include "lodash/type_check/is_iterable.h"
 
-namespace lodash::types_check::test {
+namespace lodash::type_check::test {
 
 class IsIterableTest : public testing::Test {
 protected:
@@ -25,4 +25,4 @@ TEST_F(IsIterableTest, is_iterable) {
     EXPECT_FALSE(is_iterable<int>);
 }
 
-}  // namespace lodash::types_check::test
+}  // namespace lodash::type_check::test

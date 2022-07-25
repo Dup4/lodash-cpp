@@ -4,9 +4,9 @@
 #include <vector>
 
 #include "lodash/lodash.h"
-#include "lodash/types_check/has_func_args.h"
+#include "lodash/type_check/has_func_args.h"
 
-namespace lodash::types_check::test {
+namespace lodash::type_check::test {
 
 class HasFuncArgsTest : public testing::Test {
 protected:
@@ -43,4 +43,4 @@ TEST_F(HasFuncArgsTest, has_func_args) {
     }
 }
 
-}  // namespace lodash::types_check::test
+}  // namespace lodash::type_check::test

@@ -4,7 +4,7 @@
 #include <functional>
 #include <type_traits>
 
-namespace lodash::types_check {
+namespace lodash::type_check {
 
 template <typename, typename T1, typename = void>
 constexpr bool has_func_args_1{};
@@ -50,6 +50,6 @@ constexpr bool has_func_args_4<
                 std::declval<T>(), std::declval<T1>(), std::declval<T2>(), std::declval<T3>(), std::declval<T4>()))>> =
         true;
 
-}  // namespace lodash::types_check
+}  // namespace lodash::type_check
 
 #endif  // LODASH_TYPES_CHECK_HAS_FUNC_ARGS_H
