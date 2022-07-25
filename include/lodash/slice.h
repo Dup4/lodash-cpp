@@ -6,12 +6,13 @@
 
 #include <iostream>
 
+#include "./type_utility/get_result_type.h"
 #include "./type_utility/push_back_to_container.h"
 #include "./type_utility/visit_container.h"
 
 namespace lodash {
 
-template <typename R, typename Container, typename F>
+template <typename R, typename Container, typename F, typename... Args>
 inline auto Map(Container&& c, F&& f) {
     auto res = R();
 
@@ -22,6 +23,9 @@ inline auto Map(Container&& c, F&& f) {
 
     return res;
 }
+
+// template <typename Container, typename F, typename... Args>
+// inline auto Map(Container&& c, F&& f, )
 
 template <typename Container, typename F>
 inline void ForEach(Container&& c, F&& f) {

@@ -8,7 +8,7 @@
 namespace lodash::type_utility {
 
 template <typename Container, typename T>
-void PushBackToContainer(Container&& c, T&& t) {
+inline void PushBackToContainer(Container&& c, T&& t) {
     if constexpr (types_check::is_map<std::decay_t<Container>>) {
         c.emplace(std::forward<T>(t));
     } else {

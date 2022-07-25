@@ -21,7 +21,7 @@ template <typename Container,
           std::enable_if_t<types_check::is_map<std::decay_t<Container>>, bool> = true,
           typename F,
           typename H>
-void VisitContainer(Container&& c, F&& f, H&& h) {
+inline void VisitContainer(Container&& c, F&& f, H&& h) {
     size_t ix = 0;
 
     using key_type = typename std::decay_t<Container>::key_type;
@@ -86,7 +86,7 @@ template <typename Container,
           std::enable_if_t<!types_check::is_map<std::decay_t<Container>>, bool> = true,
           typename F,
           typename H>
-void VisitContainer(Container&& c, F&& f, H&& h) {
+inline void VisitContainer(Container&& c, F&& f, H&& h) {
     size_t ix = 0;
 
     for (auto&& x : c) {
@@ -119,7 +119,7 @@ void VisitContainer(Container&& c, F&& f, H&& h) {
 }
 
 template <typename Container, typename F>
-void VisitContainer(Container&& c, F&& f) {
+inline void VisitContainer(Container&& c, F&& f) {
     VisitContainer(std::forward<Container>(c), std::forward<F>(f), default_visit_handler);
 }
 
