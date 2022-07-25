@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "snapshot/snapshot.h"
 
+#include <map>
 #include <vector>
 
 #include "lodash/lodash.h"
@@ -16,7 +17,7 @@ TEST_F(SliceTest, map_test) {
     auto t = std::vector<int>({1, 2, 3, 4, 5});
 
     {
-        auto res = Map<std::vector<int>>(t, [](auto &&x) {
+        auto res = Map(t, [](auto &&x) {
             return x * 2;
         });
 
@@ -24,11 +25,20 @@ TEST_F(SliceTest, map_test) {
     }
 
     {
-        auto res = Map<std::vector<std::string>>(t, [](auto &&x) {
+        auto res = Map(t, [](auto &&x) {
             return std::to_string(x);
         });
 
         EXPECT_EQ(res, std::vector<std::string>({"1", "2", "3", "4", "5"}));
+    }
+
+    {
+        auto res = Map<std::map<int, int>>(t, [](auto &&x, size_t ix) {
+            return std::make_pair(ix, x);
+        });
+
+        auto expected = std::map<int, int>({{0, 1}, {1, 2}, {2, 3}, {3, 4}, {4, 5}});
+        EXPECT_EQ(res, expected);
     }
 }
 

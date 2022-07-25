@@ -24,8 +24,11 @@ inline auto Map(Container&& c, F&& f) {
     return res;
 }
 
-// template <typename Container, typename F, typename... Args>
-// inline auto Map(Container&& c, F&& f, )
+template <typename Container, typename F>
+inline auto Map(Container&& c, F&& f) {
+    using r = type_utility::get_result_type_t<Container, F>;
+    return Map<std::vector<r>>(std::forward<Container>(c), std::forward<F>(f));
+}
 
 template <typename Container, typename F>
 inline void ForEach(Container&& c, F&& f) {
