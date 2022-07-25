@@ -237,4 +237,31 @@ TEST_F(SliceTest, Some) {
     }
 }
 
+TEST_F(SliceTest, Count) {
+    {
+        auto t = std::vector<int>({1, 1, 2, 2, 3, 4, 5});
+
+        {
+            auto res = CountBy(t, [](const int &x) {
+                return x > 0;
+            });
+
+            EXPECT_EQ(res, 7);
+        }
+
+        {
+            auto res = CountBy(t, [](const int &x) {
+                return x > 1;
+            });
+
+            EXPECT_EQ(res, 5);
+        }
+
+        {
+            auto res = Count(t, 2);
+            EXPECT_EQ(res, 2);
+        }
+    }
+}
+
 }  // namespace lodash::test

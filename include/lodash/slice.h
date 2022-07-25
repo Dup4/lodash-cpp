@@ -96,6 +96,30 @@ inline bool Some(Container&& c) {
     });
 }
 
+template <typename Container, typename F>
+inline size_t CountBy(Container&& c, F&& f) {
+    size_t count = 0;
+
+    type_utility::VisitContainer(std::forward<Container>(c),
+                                 std::forward<F>(f),
+                                 [&count](auto&& r, [[maybe_unused]] auto&& value, [[maybe_unused]] auto&& node_info) {
+                                     if (r) {
+                                         ++count;
+                                     }
+
+                                     return type_utility::ReturnInfo{};
+                                 });
+
+    return count;
+}
+
+template <typename Container, typename T>
+inline size_t Count(Container&& c, T&& t) {
+    return CountBy(std::forward<Container>(c), [t](auto&& x) {
+        return x == t;
+    });
+}
+
 }  // namespace lodash
 
 #endif  // LODASH_SLICE_H
