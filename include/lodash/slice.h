@@ -12,7 +12,7 @@
 
 namespace lodash {
 
-template <typename R, typename Container, typename F, typename... Args>
+template <typename R, typename Container, typename F>
 inline auto Map(Container&& c, F&& f) {
     auto res = R();
 
