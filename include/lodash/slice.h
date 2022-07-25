@@ -16,10 +16,12 @@ template <typename R, typename Container, typename F>
 inline auto Map(Container&& c, F&& f) {
     auto res = R();
 
-    type_utility::VisitContainer(std::forward<Container>(c), std::forward<F>(f), [&res](auto&& x) {
-        type_utility::PushBackToContainer(res, x);
-        return type_utility::ReturnInfo{};
-    });
+    type_utility::VisitContainer(std::forward<Container>(c),
+                                 std::forward<F>(f),
+                                 [&res](auto&& r, [[maybe_unused]] auto&& value, [[maybe_unused]] auto&& node_info) {
+                                     type_utility::PushBackToContainer(res, r);
+                                     return type_utility::ReturnInfo{};
+                                 });
 
     return res;
 }
@@ -31,6 +33,23 @@ inline auto Map(Container&& c, F&& f) {
 }
 
 template <typename Container, typename F>
+inline auto Filter(Container&& c, F&& f) {
+    auto res = std::decay_t<Container>();
+
+    type_utility::VisitContainer(std::forward<Container>(c),
+                                 std::forward<F>(f),
+                                 [&res](auto&& r, auto&& value, [[maybe_unused]] auto&& node_info) {
+                                     if (r) {
+                                         type_utility::PushBackToContainer(res, value);
+                                     }
+
+                                     return type_utility::ReturnInfo{};
+                                 });
+
+    return res;
+}
+
+template <typename Container, typename F>
 inline void ForEach(Container&& c, F&& f) {
     type_utility::VisitContainer(std::forward<Container>(c), std::forward<F>(f));
 }
@@ -39,10 +58,12 @@ template <typename Container, typename F>
 inline bool EveryBy(Container&& c, F&& f) {
     bool ok = true;
 
-    type_utility::VisitContainer(std::forward<Container>(c), std::forward<F>(f), [&ok](auto&& x) {
-        ok = x;
-        return type_utility::ReturnInfo{.need_exit = !ok};
-    });
+    type_utility::VisitContainer(std::forward<Container>(c),
+                                 std::forward<F>(f),
+                                 [&ok](auto&& r, [[maybe_unused]] auto&& value, [[maybe_unused]] auto&& node_info) {
+                                     ok = r;
+                                     return type_utility::ReturnInfo{.need_exit = !ok};
+                                 });
 
     return ok;
 }
@@ -58,10 +79,12 @@ template <typename Container, typename F>
 inline bool SomeBy(Container&& c, F&& f) {
     bool ok = false;
 
-    type_utility::VisitContainer(std::forward<Container>(c), std::forward<F>(f), [&ok](auto&& x) {
-        ok = x;
-        return type_utility::ReturnInfo{.need_exit = ok};
-    });
+    type_utility::VisitContainer(std::forward<Container>(c),
+                                 std::forward<F>(f),
+                                 [&ok](auto&& r, [[maybe_unused]] auto&& value, [[maybe_unused]] auto&& node_info) {
+                                     ok = r;
+                                     return type_utility::ReturnInfo{.need_exit = ok};
+                                 });
 
     return ok;
 }

@@ -9,6 +9,12 @@
 
 namespace lodash::type_utility {
 
+struct NodeInfo {
+    size_t ix;
+    bool is_first;
+    bool is_last;
+};
+
 struct ReturnInfo {
     bool need_exit{false};
 };
@@ -32,12 +38,13 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
     auto end_it = std::end(c);
 
     while (begin != end_it) {
+        auto node_info = NodeInfo{ix, begin == std::begin(c), begin == std::prev(end_it)};
         if constexpr (type_check::has_func_args_2<F, value_type&, size_t>) {
             using return_type = std::result_of_t<F(value_type&, size_t)>;
             if constexpr (std::is_void_v<return_type>) {
                 f(*begin, ix);
             } else {
-                auto res = h(f(*begin, ix));
+                auto res = h(f(*begin, ix), *begin, node_info);
                 if (res.need_exit) {
                     break;
                 }
@@ -47,7 +54,7 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
             if constexpr (std::is_void_v<return_type>) {
                 f(*begin);
             } else {
-                auto res = h(f(*begin));
+                auto res = h(f(*begin), *begin, node_info);
                 if (res.need_exit) {
                     break;
                 }
@@ -58,7 +65,7 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
                 if constexpr (std::is_void_v<return_type>) {
                     f(begin->first, begin->second, ix);
                 } else {
-                    auto res = h(f(begin->first, begin->second, ix));
+                    auto res = h(f(begin->first, begin->second, ix), *begin, node_info);
                     if (res.need_exit) {
                         break;
                     }
@@ -68,7 +75,7 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
                 if constexpr (std::is_void_v<return_type>) {
                     f(begin->first, begin->second);
                 } else {
-                    auto res = h(f(begin->first, begin->second));
+                    auto res = h(f(begin->first, begin->second), *begin, node_info);
                     if (res.need_exit) {
                         break;
                     }
@@ -90,23 +97,29 @@ template <typename Container,
 inline void VisitContainer(Container&& c, F&& f, H&& h) {
     size_t ix = 0;
 
-    for (auto&& x : c) {
-        if constexpr (type_check::has_func_args_2<F, decltype(x), size_t>) {
-            using return_type = std::result_of_t<F(decltype(x), size_t)>;
+    using value_type = typename std::decay_t<Container>::value_type;
+
+    auto begin = std::begin(c);
+    auto end_it = std::end(c);
+
+    while (begin != end_it) {
+        auto node_info = NodeInfo{ix, begin == std::begin(c), begin == std::prev(end_it)};
+        if constexpr (type_check::has_func_args_2<F, value_type&, size_t>) {
+            using return_type = std::result_of_t<F(value_type&, size_t)>;
             if constexpr (std::is_void_v<return_type>) {
-                f(x, ix);
+                f(*begin, ix);
             } else {
-                auto res = h(f(x, ix));
+                auto res = h(f(*begin, ix), *begin, node_info);
                 if (res.need_exit) {
                     break;
                 }
             }
-        } else if constexpr (type_check::has_func_args_1<F, decltype(x)>) {
-            using return_type = std::result_of_t<F(decltype(x))>;
+        } else if constexpr (type_check::has_func_args_1<F, value_type&>) {
+            using return_type = std::result_of_t<F(value_type&)>;
             if constexpr (std::is_void_v<return_type>) {
-                f(x);
+                f(*begin);
             } else {
-                auto res = h(f(x));
+                auto res = h(f(*begin), *begin, node_info);
                 if (res.need_exit) {
                     break;
                 }
@@ -116,6 +129,7 @@ inline void VisitContainer(Container&& c, F&& f, H&& h) {
         }
 
         ++ix;
+        ++begin;
     }
 }
 

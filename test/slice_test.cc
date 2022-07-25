@@ -13,8 +13,8 @@ protected:
     virtual void SetUp() override {}
 };
 
-TEST_F(SliceTest, map_test) {
-    auto t = std::vector<int>({1, 2, 3, 4, 5});
+TEST_F(SliceTest, Map) {
+    const auto t = std::vector<int>({1, 2, 3, 4, 5});
 
     {
         auto res = Map(t, [](auto &&x) {
@@ -39,6 +39,18 @@ TEST_F(SliceTest, map_test) {
 
         auto expected = std::map<int, int>({{0, 1}, {1, 2}, {2, 3}, {3, 4}, {4, 5}});
         EXPECT_EQ(res, expected);
+    }
+}
+
+TEST_F(SliceTest, Filter) {
+    {
+        const auto t = std::vector<int>({1, 2, 3, 4, 5});
+
+        auto res = Filter(t, [](auto &&x) {
+            return x % 2 == 0;
+        });
+
+        EXPECT_EQ(res, std::vector<int>({2, 4}));
     }
 }
 
