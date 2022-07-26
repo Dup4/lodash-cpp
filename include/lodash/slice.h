@@ -49,6 +49,7 @@ inline auto Filter(Container&& c, F&& f) {
     return res;
 }
 
+// ForEach iterates over elements of collection and invokes iteratee for each element.
 template <typename Container, typename F>
 inline void ForEach(Container&& c, F&& f) {
     type_utility::VisitContainer(std::forward<Container>(c), std::forward<F>(f));
