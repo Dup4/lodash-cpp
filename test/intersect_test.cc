@@ -14,6 +14,24 @@ protected:
     virtual void SetUp() override {}
 };
 
+TEST_F(IntersectTest, Contains) {
+    {
+        auto t = std::vector<int>({1, 2, 3, 4, 5, 6});
+
+        {
+            auto res = Contains(t, 3);
+            EXPECT_TRUE(res);
+        }
+
+        {
+            auto res = ContainsBy(t, [](auto &&x) {
+                return x > 3;
+            });
+            EXPECT_TRUE(res);
+        }
+    }
+}
+
 TEST_F(IntersectTest, Every) {
     {
         auto t = std::vector<int>({1, 2, 3, 4, 5});
@@ -53,7 +71,7 @@ TEST_F(IntersectTest, Every) {
     }
 }
 
-TEST_F(IntersectTest Some) {
+TEST_F(IntersectTest, Some) {
     {
         auto t = std::vector<int>({1, 2, 3, 4, 5});
 
