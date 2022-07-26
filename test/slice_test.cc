@@ -162,6 +162,22 @@ TEST_F(SliceTest, ForEach) {
     }
 }
 
+TEST_F(SliceTest, Flatten) {
+    {
+        auto t = std::vector<std::vector<int>>({{1, 2}, {3, 4}, {5, 6}});
+        auto res = Flatten(t);
+        auto expected = std::vector<int>({1, 2, 3, 4, 5, 6});
+        EXPECT_EQ(res, expected);
+    }
+
+    {
+        auto t = std::vector<std::vector<std::vector<int>>>({{{1, 2}, {3, 4}}, {{5, 6}}});
+        auto res = Flatten(t);
+        auto expected = std::vector<int>({1, 2, 3, 4, 5, 6});
+        EXPECT_EQ(res, expected);
+    }
+}
+
 TEST_F(SliceTest, Count) {
     {
         auto t = std::vector<int>({1, 1, 2, 2, 3, 4, 5});

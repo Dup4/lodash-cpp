@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+#include "./type_check/is_iterable.h"
+#include "./type_utility/get_flatten_container_value_type.h"
 #include "./type_utility/get_result_type.h"
 #include "./type_utility/push_back_to_container.h"
 #include "./type_utility/visit_container.h"
@@ -33,7 +35,7 @@ inline auto Map(Container&& c, F&& f) {
     return Map<std::vector<r>>(std::forward<Container>(c), std::forward<F>(f));
 }
 
-// Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
+// Filter iterates over elements of collection, returning an container of all elements predicate returns truthy for.
 template <typename Container, typename F>
 inline auto Filter(Container&& c, F&& f) {
     auto res = std::decay_t<Container>();
@@ -74,6 +76,23 @@ inline auto Reject(Container&& c, F&& f) {
 template <typename Container, typename F>
 inline void ForEach(Container&& c, F&& f) {
     type_utility::VisitContainer(std::forward<Container>(c), std::forward<F>(f));
+}
+
+// Flatten returns an container a single level deep.
+template <typename Container>
+inline auto Flatten(Container&& c) {
+    auto res = std::vector<type_utility::get_flatten_container_value_type_t<Container>>();
+
+    for (auto&& v : c) {
+        if constexpr (type_check::is_iterable<std::decay_t<decltype(v)>>) {
+            auto v_res = Flatten(v);
+            res.insert(res.end(), v_res.begin(), v_res.end());
+        } else {
+            type_utility::PushBackToContainer(res, v);
+        }
+    }
+
+    return res;
 }
 
 // CountBy counts the number of elements in the collection for which predicate is true.
