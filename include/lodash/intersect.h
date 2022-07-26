@@ -73,6 +73,27 @@ inline bool Some(Container&& c) {
     });
 }
 
+template <typename Container, typename F>
+inline bool NoneBy(Container&& c, F&& f) {
+    bool ok = true;
+
+    type_utility::VisitContainer(std::forward<Container>(c),
+                                 std::forward<F>(f),
+                                 [&ok](auto&& r, [[maybe_unused]] auto&& value, [[maybe_unused]] auto&& node_info) {
+                                     ok = !r;
+                                     return type_utility::ReturnInfo{.need_exit = !ok};
+                                 });
+
+    return ok;
+}
+
+template <typename Container>
+inline bool None(Container&& c) {
+    return NoneBy(std::forward<Container>(c), [](auto&& x) {
+        return static_cast<bool>(x);
+    });
+}
+
 }  // namespace lodash
 
 #endif  // LODASH_INTERSECT_H

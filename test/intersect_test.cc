@@ -118,4 +118,29 @@ TEST_F(IntersectTest, Some) {
     }
 }
 
+TEST_F(IntersectTest, None) {
+    {
+        auto t = std::vector<int>({1, 2, 3, 4, 5});
+
+        {
+            auto res = None(t);
+            EXPECT_FALSE(res);
+        }
+
+        {
+            auto res = NoneBy(t, [](const int &x) {
+                return x <= 0;
+            });
+            EXPECT_TRUE(res);
+        }
+
+        {
+            auto res = NoneBy(t, [](const int &x) {
+                return x <= 1;
+            });
+            EXPECT_FALSE(res);
+        }
+    }
+}
+
 }  // namespace lodash::test
