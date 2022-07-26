@@ -2,10 +2,10 @@
 #define LODASH_INTERSECT_H
 
 #include <iterator>
+#include <set>
 #include <type_traits>
 
-#include <iostream>
-
+#include "./type_utility/push_back_to_container.h"
 #include "./type_utility/visit_container.h"
 
 namespace lodash {
@@ -92,6 +92,27 @@ inline bool None(Container&& c) {
     return NoneBy(std::forward<Container>(c), [](auto&& x) {
         return static_cast<bool>(x);
     });
+}
+
+template <typename Container>
+inline auto Intersect(Container&& c1, Container&& c2) {
+    using value_type = typename std::decay_t<Container>::value_type;
+
+    auto res = std::decay_t<Container>();
+    auto se = std::set<value_type>();
+
+    for (auto&& v : c1) {
+        se.insert(v);
+    }
+
+    for (auto&& v : c2) {
+        if (se.count(v)) {
+            type_utility::PushBackToContainer(res, v);
+            se.erase(v);
+        }
+    }
+
+    return res;
 }
 
 }  // namespace lodash

@@ -143,4 +143,40 @@ TEST_F(IntersectTest, None) {
     }
 }
 
+TEST_F(IntersectTest, Intersect) {
+    {
+        auto t1 = std::vector<int>({1, 2, 3, 4, 5});
+        auto t2 = std::vector<int>({2, 3});
+
+        {
+            auto res = Intersect(t1, t2);
+            EXPECT_EQ(res.size(), 2);
+            EXPECT_EQ(res[0], 2);
+            EXPECT_EQ(res[1], 3);
+        }
+    }
+
+    {
+        auto t1 = std::vector<int>({1, 2, 3, 4, 5});
+        auto t2 = std::vector<int>({2, 2});
+
+        {
+            auto res = Intersect(t1, t2);
+            EXPECT_EQ(res.size(), 1);
+            EXPECT_EQ(res[0], 2);
+        }
+    }
+
+    {
+        auto t1 = std::vector<int>({1, 2, 3, 4, 5});
+        auto t2 = std::vector<int>({2, 2});
+
+        {
+            auto res = Intersect(t2, t1);
+            EXPECT_EQ(res.size(), 1);
+            EXPECT_EQ(res[0], 2);
+        }
+    }
+}
+
 }  // namespace lodash::test
