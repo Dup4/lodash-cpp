@@ -12,6 +12,7 @@
 
 namespace lodash {
 
+// Map manipulates a slice and transforms it to a slice of another type.
 template <typename R, typename Container, typename F>
 inline auto Map(Container&& c, F&& f) {
     auto res = R();
