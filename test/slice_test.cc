@@ -178,6 +178,22 @@ TEST_F(SliceTest, Count) {
     }
 }
 
+TEST_F(SliceTest, Replace) {
+    {
+        auto t = std::vector<int>({1, 2, 3, 4, 5, 4, 3, 2, 1});
+        auto res = Replace(t, 4, 0);
+        auto expected = std::vector<int>({1, 2, 3, 0, 5, 0, 3, 2, 1});
+        EXPECT_EQ(res, expected);
+    }
+
+    {
+        auto t = std::string("abcdcba");
+        auto res = Replace(t, 'a', 'c');
+        auto expected = std::string("cbcdcbc");
+        EXPECT_EQ(res, expected);
+    }
+}
+
 TEST_F(SliceTest, Compact) {
     {
         auto t = std::vector<int>({0, 1, 2, 3, 0, 5, 6});

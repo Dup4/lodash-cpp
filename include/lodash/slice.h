@@ -78,6 +78,29 @@ inline size_t Count(Container&& c, T&& t) {
     });
 }
 
+// Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
+template <typename Container, typename T>
+inline auto Replace(Container&& c, T&& old_element, T&& new_element, size_t n = -1) {
+    auto res = std::decay_t<Container>();
+
+    for (auto&& v : c) {
+        if (v == old_element && n != 0) {
+            type_utility::PushBackToContainer(res, new_element);
+            --n;
+        } else {
+            type_utility::PushBackToContainer(res, v);
+        }
+    }
+
+    return res;
+}
+
+// ReplaceAll returns a copy of the slice with all non-overlapping instances of old replaced by new.
+template <typename Container, typename T>
+inline auto ReplaceAll(Container&& c, T&& old_element, T&& new_element) {
+    return Replace(std::forward<Container>(c), std::forward<T>(old_element), std::forward<T>(new_element), -1);
+}
+
 // Compact returns a slice of all non-zero elements.
 template <typename Container>
 inline auto Compact(Container&& c) {
