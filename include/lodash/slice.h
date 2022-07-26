@@ -78,6 +78,7 @@ inline size_t Count(Container&& c, T&& t) {
     });
 }
 
+// Compact returns a slice of all non-zero elements.
 template <typename Container>
 inline auto Compact(Container&& c) {
     using value_type = typename std::decay_t<Container>::value_type;
