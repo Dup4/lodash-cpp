@@ -179,4 +179,17 @@ TEST_F(IntersectTest, Intersect) {
     }
 }
 
+TEST_F(IntersectTest, Union) {
+    {
+        auto t1 = std::vector<int>({1, 2, 3});
+        auto t2 = std::vector<int>({2, 3, 4, 5});
+
+        {
+            auto res = Union(t1, t2);
+            auto expected = std::vector<int>({1, 2, 3, 4, 5});
+            EXPECT_EQ(res, expected);
+        }
+    }
+}
+
 }  // namespace lodash::test

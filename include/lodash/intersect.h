@@ -115,6 +115,28 @@ inline auto Intersect(Container&& c1, Container&& c2) {
     return res;
 }
 
+template <typename Container>
+inline auto Union(Container&& c1, Container&& c2) {
+    using value_type = typename std::decay_t<Container>::value_type;
+
+    auto res = std::decay_t<Container>();
+    auto se = std::set<value_type>();
+
+    for (auto&& v : c1) {
+        se.insert(v);
+    }
+
+    for (auto&& v : c2) {
+        se.insert(v);
+    }
+
+    for (auto&& v : se) {
+        type_utility::PushBackToContainer(res, v);
+    }
+
+    return res;
+}
+
 }  // namespace lodash
 
 #endif  // LODASH_INTERSECT_H
