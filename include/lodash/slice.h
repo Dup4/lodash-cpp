@@ -51,6 +51,25 @@ inline auto Filter(Container&& c, F&& f) {
     return res;
 }
 
+// Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return
+// truthy for.
+template <typename Container, typename F>
+inline auto Reject(Container&& c, F&& f) {
+    auto res = std::decay_t<Container>();
+
+    type_utility::VisitContainer(std::forward<Container>(c),
+                                 std::forward<F>(f),
+                                 [&res](auto&& r, auto&& value, [[maybe_unused]] auto&& node_info) {
+                                     if (!r) {
+                                         type_utility::PushBackToContainer(res, value);
+                                     }
+
+                                     return type_utility::ReturnInfo{};
+                                 });
+
+    return res;
+}
+
 // ForEach iterates over elements of collection and invokes iteratee for each element.
 template <typename Container, typename F>
 inline void ForEach(Container&& c, F&& f) {

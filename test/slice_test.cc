@@ -65,6 +65,17 @@ TEST_F(SliceTest, Filter) {
     }
 }
 
+TEST_F(SliceTest, Reject) {
+    {
+        auto t = std::vector<int>({1, 2, 3, 4, 5});
+        auto res = Reject(t, [](auto &&x) {
+            return x % 2 == 0;
+        });
+        auto expected = std::vector<int>({1, 3, 5});
+        EXPECT_EQ(res, expected);
+    }
+}
+
 TEST_F(SliceTest, ForEach) {
     {
         auto x = std::vector<int>({1, 2, 3, 4, 5});
