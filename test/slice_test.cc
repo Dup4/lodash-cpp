@@ -178,4 +178,20 @@ TEST_F(SliceTest, Count) {
     }
 }
 
+TEST_F(SliceTest, Compact) {
+    {
+        auto t = std::vector<int>({0, 1, 2, 3, 0, 5, 6});
+        auto res = Compact(t);
+        auto expected = std::vector<int>({1, 2, 3, 5, 6});
+        EXPECT_EQ(res, expected);
+    }
+
+    {
+        auto t = std::vector<std::string>({"", "1", "", "2", "", "3"});
+        auto res = Compact(t);
+        auto expected = std::vector<std::string>({"1", "2", "3"});
+        EXPECT_EQ(res, expected);
+    }
+}
+
 }  // namespace lodash::test

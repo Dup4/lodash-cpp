@@ -5,7 +5,7 @@ namespace lodash {
 
 template <typename T>
 inline T Empty() {
-    return T{};
+    return T();
 }
 
 template <typename T>

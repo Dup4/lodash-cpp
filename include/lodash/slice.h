@@ -78,6 +78,16 @@ inline size_t Count(Container&& c, T&& t) {
     });
 }
 
+template <typename Container>
+inline auto Compact(Container&& c) {
+    using value_type = typename std::decay_t<Container>::value_type;
+    auto zero = value_type();
+
+    return Filter(std::forward<Container>(c), [zero](auto&& x) {
+        return x != zero;
+    });
+}
+
 }  // namespace lodash
 
 #endif  // LODASH_SLICE_H
