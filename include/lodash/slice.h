@@ -54,6 +54,7 @@ inline void ForEach(Container&& c, F&& f) {
     type_utility::VisitContainer(std::forward<Container>(c), std::forward<F>(f));
 }
 
+// CountBy counts the number of elements in the collection for which predicate is true.
 template <typename Container, typename F>
 inline size_t CountBy(Container&& c, F&& f) {
     size_t count = 0;
@@ -71,6 +72,7 @@ inline size_t CountBy(Container&& c, F&& f) {
     return count;
 }
 
+// Count counts the number of elements in the collection that compare equal to value.
 template <typename Container, typename T>
 inline size_t Count(Container&& c, T&& t) {
     return CountBy(std::forward<Container>(c), [t](auto&& x) {
