@@ -32,6 +32,7 @@ inline auto Map(Container&& c, F&& f) {
     return Map<std::vector<r>>(std::forward<Container>(c), std::forward<F>(f));
 }
 
+// Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
 template <typename Container, typename F>
 inline auto Filter(Container&& c, F&& f) {
     auto res = std::decay_t<Container>();
