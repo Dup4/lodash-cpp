@@ -42,6 +42,54 @@ TEST_F(SliceTest, Map) {
     }
 }
 
+TEST_F(SliceTest, Reduce) {
+    {
+        auto t = std::vector<int>({1, 2, 3, 4, 5});
+
+        {
+            auto res = Reduce(
+                    t,
+                    [](const int &pre, const int &v) {
+                        return pre + v;
+                    },
+                    0);
+
+            EXPECT_EQ(res, 15);
+        }
+
+        {
+            auto res = Reduce(
+                    t,
+                    [](const int &pre, const int &v) {
+                        return pre + v;
+                    },
+                    10);
+            EXPECT_EQ(res, 25);
+        }
+
+        {
+            auto res = Reduce(
+                    t,
+                    [](const std::string &pre, const int &v) {
+                        return pre + std::to_string(v);
+                    },
+                    std::string(""));
+            EXPECT_EQ(res, "12345");
+        }
+    }
+
+    {
+        auto t = std::map<int, int>({{1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}});
+        auto res = Reduce(
+                t,
+                [](const int &pre, const int &k, const int &v) {
+                    return pre + k + v;
+                },
+                0);
+        EXPECT_EQ(res, 30);
+    }
+}
+
 TEST_F(SliceTest, Filter) {
     {
         const auto t = std::vector<int>({1, 2, 3, 4, 5});

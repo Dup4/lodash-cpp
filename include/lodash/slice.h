@@ -9,6 +9,7 @@
 #include "./type_utility/get_flatten_container_value_type.h"
 #include "./type_utility/get_result_type.h"
 #include "./type_utility/push_back_to_container.h"
+#include "./type_utility/reduce_handler.h"
 #include "./type_utility/visit_container.h"
 
 namespace lodash {
@@ -32,6 +33,15 @@ template <typename Container, typename F>
 inline auto Map(Container&& c, F&& f) {
     using r = type_utility::get_result_type_t<Container, F>;
     return Map<std::vector<r>>(std::forward<Container>(c), std::forward<F>(f));
+}
+
+// Reduce reduces collection to a value which is the accumulated result of running each element in collection
+// through accumulator, where each successive invocation is supplied the return value of the previous.
+template <typename Container, typename F, typename T>
+inline auto Reduce(Container&& c, F&& f, T&& init) {
+    auto h = type_utility::ReduceHandler(std::forward<F>(f), std::forward<T>(init));
+    type_utility::VisitContainer(std::forward<Container>(c), h);
+    return h.GetRes();
 }
 
 // Filter iterates over elements of collection, returning an container of all elements predicate returns truthy for.
