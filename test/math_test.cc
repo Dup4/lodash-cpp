@@ -14,6 +14,52 @@ protected:
     virtual void SetUp() override {}
 };
 
+TEST_F(MathTest, Range) {
+    {
+        auto t = Range(10);
+        auto expected = std::vector<int32_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        EXPECT_EQ(t, expected);
+    }
+
+    {
+        auto t = Range(-10);
+        auto expected = std::vector<int32_t>{0, -1, -2, -3, -4, -5, -6, -7, -8, -9};
+        EXPECT_EQ(t, expected);
+    }
+
+    {
+        auto t = Range(10, 20);
+        auto expected = std::vector<int32_t>{10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
+        EXPECT_EQ(t, expected);
+    }
+
+    {
+        auto t = Range(20, 10);
+        auto expected = std::vector<int32_t>{20, 19, 18, 17, 16, 15, 14, 13, 12, 11};
+        EXPECT_EQ(t, expected);
+    }
+
+    {
+        auto t = Range(10, 20, 5);
+        auto expected = std::vector<int32_t>{10, 15};
+        EXPECT_EQ(t, expected);
+    }
+
+    {
+        auto t = Range(20, 10, -5);
+        auto expected = std::vector<int32_t>{20, 15};
+        EXPECT_EQ(t, expected);
+    }
+
+    {
+        int32_t res = 0;
+        for (const auto& ix : Range(10)) {
+            res += ix;
+        }
+        EXPECT_EQ(res, 45);
+    }
+}
+
 TEST_F(MathTest, Clamp) {
     EXPECT_EQ(Clamp(0, 0, 1), 0);
     EXPECT_EQ(Clamp(0, 1, 2), 1);

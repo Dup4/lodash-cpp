@@ -2,8 +2,56 @@
 #define LODASH_MATH_H
 
 #include <type_traits>
+#include <vector>
 
 namespace lodash {
+
+// Range creates an array of numbers (positive and/or negative) with given length.
+template <typename T = int32_t>
+inline auto Range(T start, T stop, T step) {
+    auto res = std::vector<T>();
+    res.reserve(abs(stop - start) / abs(step));
+
+    if (start == stop || step == 0) {
+        return res;
+    }
+
+    if (start < stop) {
+        if (step < 0) {
+            return res;
+        }
+
+        for (auto i = start; i < stop; i += step) {
+            res.push_back(i);
+        }
+    }
+
+    if (start > stop) {
+        if (step > 0) {
+            return res;
+        }
+
+        for (auto i = start; i > stop; i += step) {
+            res.push_back(i);
+        }
+    }
+
+    return res;
+}
+
+template <typename T = int32_t>
+inline auto Range(T start, T stop) {
+    if (start <= stop) {
+        return Range<T>(start, stop, T(1));
+    } else {
+        return Range<T>(start, stop, T(-1));
+    }
+}
+
+template <typename T = int32_t>
+inline auto Range(T stop) {
+    return Range<T>(T(0), stop);
+}
 
 // Clamp clamps number within the inclusive lower and upper bounds.
 template <typename T>
