@@ -178,6 +178,22 @@ TEST_F(SliceTest, Flatten) {
     }
 }
 
+TEST_F(SliceTest, Uniq) {
+    {
+        auto t = std::vector<int>({1, 1, 2, 2, 3, 3, 4, 4, 5, 5});
+        auto res = Uniq(t);
+        auto expected = std::vector<int>({1, 2, 3, 4, 5});
+        EXPECT_EQ(res, expected);
+    }
+
+    {
+        auto t = std::vector<int>({2, 2, 3, 3, 1, 1, 5, 5, 4, 4});
+        auto res = Uniq(t);
+        auto expected = std::vector<int>({2, 3, 1, 5, 4});
+        EXPECT_EQ(res, expected);
+    }
+}
+
 TEST_F(SliceTest, Count) {
     {
         auto t = std::vector<int>({1, 1, 2, 2, 3, 4, 5});

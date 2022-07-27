@@ -2,9 +2,8 @@
 #define LODASH_SLICE_H
 
 #include <iterator>
+#include <set>
 #include <type_traits>
-
-#include <iostream>
 
 #include "./type_check/is_iterable.h"
 #include "./type_utility/get_flatten_container_value_type.h"
@@ -88,6 +87,24 @@ inline auto Flatten(Container&& c) {
             auto v_res = Flatten(v);
             res.insert(res.end(), v_res.begin(), v_res.end());
         } else {
+            type_utility::PushBackToContainer(res, v);
+        }
+    }
+
+    return res;
+}
+
+// Uniq returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
+// The order of result values is determined by the order they occur in the array.
+template <typename Container>
+inline auto Uniq(Container&& c) {
+    using value_type = typename std::decay_t<Container>::value_type;
+    auto res = std::decay_t<Container>();
+    auto se = std::set<value_type>();
+
+    for (auto&& v : c) {
+        if (se.find(v) == se.end()) {
+            se.insert(v);
             type_utility::PushBackToContainer(res, v);
         }
     }
