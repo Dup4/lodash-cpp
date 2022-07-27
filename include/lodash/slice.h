@@ -112,6 +112,30 @@ inline auto Uniq(Container&& c) {
     return res;
 }
 
+// UniqBy returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
+// The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
+// invoked for each element in array to generate the criterion by which uniqueness is computed.
+template <typename Container, typename F>
+inline auto UniqBy(Container&& c, F&& f) {
+    using result_type = type_utility::get_result_type_t<Container, F>;
+    auto res = std::decay_t<Container>();
+    auto se = std::set<result_type>();
+
+    type_utility::VisitContainer(
+            std::forward<Container>(c),
+            std::forward<F>(f),
+            [&se, &res](auto&& r, [[maybe_unused]] auto&& value, [[maybe_unused]] auto&& node_info) {
+                if (se.find(r) == se.end()) {
+                    se.insert(r);
+                    type_utility::PushBackToContainer(res, value);
+                }
+
+                return type_utility::ReturnInfo{};
+            });
+
+    return res;
+}
+
 // CountBy counts the number of elements in the collection for which predicate is true.
 template <typename Container, typename F>
 inline size_t CountBy(Container&& c, F&& f) {

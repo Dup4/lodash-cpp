@@ -194,6 +194,17 @@ TEST_F(SliceTest, Uniq) {
     }
 }
 
+TEST_F(SliceTest, UniqBy) {
+    {
+        auto t = std::vector<int>({1, 2, 3, 4, 5});
+        auto res = UniqBy(t, [](auto &&x) {
+            return x % 2;
+        });
+        auto expected = std::vector<int>({1, 2});
+        EXPECT_EQ(res, expected);
+    }
+}
+
 TEST_F(SliceTest, Count) {
     {
         auto t = std::vector<int>({1, 1, 2, 2, 3, 4, 5});
