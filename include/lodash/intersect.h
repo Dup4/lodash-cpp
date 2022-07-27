@@ -10,6 +10,7 @@
 
 namespace lodash {
 
+// Contains returns true if an element is present in a collection.
 template <typename Container, typename F>
 inline bool ContainsBy(Container&& c, F&& f) {
     bool ok = false;
@@ -24,6 +25,7 @@ inline bool ContainsBy(Container&& c, F&& f) {
     return ok;
 }
 
+// ContainsBy returns true if predicate function return true.
 template <typename Container, typename T>
 inline bool Contains(Container&& c, T&& t) {
     return ContainsBy(std::forward<Container>(c), [&t](auto&& value) {
@@ -31,6 +33,8 @@ inline bool Contains(Container&& c, T&& t) {
     });
 }
 
+// EveryBy returns true if the predicate returns true for all of the elements in the collection or if the collection is
+// empty.
 template <typename Container, typename F>
 inline bool EveryBy(Container&& c, F&& f) {
     bool ok = true;
@@ -45,6 +49,7 @@ inline bool EveryBy(Container&& c, F&& f) {
     return ok;
 }
 
+// Every returns true if all elements of a subset are contained into a collection or if the subset is empty.
 template <typename Container>
 inline bool Every(Container&& c) {
     return EveryBy(std::forward<Container>(c), [](auto&& x) {
@@ -52,6 +57,8 @@ inline bool Every(Container&& c) {
     });
 }
 
+// SomeBy returns true if the predicate returns true for any of the elements in the collection.
+// If the collection is empty SomeBy returns false.
 template <typename Container, typename F>
 inline bool SomeBy(Container&& c, F&& f) {
     bool ok = false;
@@ -66,6 +73,8 @@ inline bool SomeBy(Container&& c, F&& f) {
     return ok;
 }
 
+// Some returns true if at least 1 element of a subset is contained into a collection.
+// If the subset is empty Some returns false.
 template <typename Container>
 inline bool Some(Container&& c) {
     return SomeBy(std::forward<Container>(c), [](auto&& x) {
@@ -73,6 +82,8 @@ inline bool Some(Container&& c) {
     });
 }
 
+// NoneBy returns true if the predicate returns true for none of the elements in the collection or if the collection is
+// empty.
 template <typename Container, typename F>
 inline bool NoneBy(Container&& c, F&& f) {
     bool ok = true;
@@ -87,6 +98,7 @@ inline bool NoneBy(Container&& c, F&& f) {
     return ok;
 }
 
+// None returns true if no element of a subset are contained into a collection or if the subset is empty.
 template <typename Container>
 inline bool None(Container&& c) {
     return NoneBy(std::forward<Container>(c), [](auto&& x) {
@@ -94,6 +106,7 @@ inline bool None(Container&& c) {
     });
 }
 
+// Intersect returns the intersection between two collections.
 template <typename Container>
 inline auto Intersect(Container&& c1, Container&& c2) {
     using value_type = typename std::decay_t<Container>::value_type;
@@ -115,6 +128,8 @@ inline auto Intersect(Container&& c1, Container&& c2) {
     return res;
 }
 
+// Union returns all distinct elements from both collections.
+// result returns will not change the order of elements relatively.
 template <typename Container>
 inline auto Union(Container&& c1, Container&& c2) {
     using value_type = typename std::decay_t<Container>::value_type;
