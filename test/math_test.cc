@@ -52,6 +52,23 @@ TEST_F(MathTest, Range) {
     }
 
     {
+        auto t = Range(int64_t(3e9), int64_t(3e9 + 10));
+        auto expected = std::vector<int64_t>({
+                3000000000,
+                3000000001,
+                3000000002,
+                3000000003,
+                3000000004,
+                3000000005,
+                3000000006,
+                3000000007,
+                3000000008,
+                3000000009,
+        });
+        EXPECT_EQ(t, expected);
+    }
+
+    {
         int32_t res = 0;
         for (const auto& ix : Range(10)) {
             res += ix;
