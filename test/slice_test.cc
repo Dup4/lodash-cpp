@@ -178,6 +178,24 @@ TEST_F(SliceTest, Flatten) {
     }
 }
 
+TEST_F(SliceTest, Times) {
+    {
+        auto res = Times(3, [](size_t ix) {
+            return ix;
+        });
+        auto expected = std::vector<size_t>({0, 1, 2});
+        EXPECT_EQ(res, expected);
+    }
+
+    {
+        auto res = Times(5, [](size_t ix) {
+            return std::to_string(ix);
+        });
+        auto expected = std::vector<std::string>({"0", "1", "2", "3", "4"});
+        EXPECT_EQ(res, expected);
+    }
+}
+
 TEST_F(SliceTest, Uniq) {
     {
         auto t = std::vector<int>({1, 1, 2, 2, 3, 3, 4, 4, 5, 5});

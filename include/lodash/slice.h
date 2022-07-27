@@ -94,6 +94,20 @@ inline auto Flatten(Container&& c) {
     return res;
 }
 
+// Times invokes the iteratee n times, returning an array of the results of each invocation.
+// The iteratee is invoked with index as argument.
+template <typename F>
+inline auto Times(size_t count, F&& f) {
+    using result_type = std::result_of_t<F(size_t)>;
+    auto res = std::vector<result_type>();
+
+    for (size_t i = 0; i < count; i++) {
+        type_utility::PushBackToContainer(res, f(i));
+    }
+
+    return res;
+}
+
 // Uniq returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the array.
 template <typename Container>
